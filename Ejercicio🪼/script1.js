@@ -1,11 +1,21 @@
+const arr=["🍔","🌯","🍣","🍕","🍜","🍱","🍙","🍘","🥩"]; //Creamos la array
+let start=4; 
+arr.forEach((n,index)=>{ 
+    if(index>=start){
+        arr[index]="🍺";
+    }
+    console.log(arr[index]);
+});
+
+//---------------------------------------------------------------
+
+
 const array = ['🍔','🌯','🍣','🍕','🍜','🍱','🍙','🍘','🥩'];
 
 const indexPizza = array.indexOf('🍕');
-for i in array;
+    for (let i = indexPizza; i < array.length; i++) {
     array[i] = '🍺';
 
-    
-if 🍕 = 🍕;
-    replace (🍺)
+}
 
 console.log(array);

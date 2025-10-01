@@ -1,11 +1,6 @@
+// 2. Encontrar si existe un elemento en el array que sea una piña. 🍕🍕🍍🍕🍕
+
 const array = ['🍕','🍕','🍍','🍕','🍕'];
 
-
 const existePiña = array.includes('🍍');
-
-arr.forEach((n,index)=>{ 
-    if(index>=start){
-        arr[index]="🍍";
-    }
-    console.log(arr[index]);
-});
+console.log("¿Existe piña? ", existePiña);

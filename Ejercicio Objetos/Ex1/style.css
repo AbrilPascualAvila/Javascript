@@ -1,0 +1,11 @@
+.block {
+            margin-bottom: 20px; 
+        }
+        .block button,
+        .block input {
+            margin-right: 10px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+        }

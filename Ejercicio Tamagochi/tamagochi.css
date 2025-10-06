@@ -1,0 +1,80 @@
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d3f0c7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .game-container {
+        width: 800px;
+        height: 600px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 5px;
+    }
+
+    .quadrant {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        position: relative;
+        border-radius: 10px;
+    }
+
+    .eat { background-color: #b6f1b1; }
+    .play { background-color: #fff9b1; }
+    .fight { background-color: #f1b1b1; }
+    .sleep { background-color: #b1d4f1; }
+
+    .progress-container {
+        width: 80%;
+        height: 20px;
+        background-color: #ccc;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4caf50;
+        border-radius: 10px;
+        width: 50%;
+    }
+
+    .pet-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .pet-container img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        width: 90%;
+    }
+
+    .stats div {
+        font-size: 12px;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 5px 10px;
+        font-weight: bold;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+    }

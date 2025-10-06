@@ -6,7 +6,7 @@ for (let i = 0; i < array.length; i++) {
     if (array[i] === '🌶️') {
         // Inserta 🥵 después del 🌶️
         array.splice(i + 1, 0, '🥵');
-        i++; // Saltamos el 🥵 que acabamos de insertar
+        i++; // Saltamos el 🥵 recién insertado para no iterarlo
     }
 }
 

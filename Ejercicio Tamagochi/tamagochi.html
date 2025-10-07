@@ -1,55 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="tamagochi.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Tamagotchi Pokémon</title>
+  <link rel="stylesheet" href="tamagochi.css">
 </head>
 <body>
-    <div class="game-container">
+
+  <!-- Selector -->
+  <div class="selector-container" id="selectorContainer">
+    <h2>Elige tu Pokémon</h2>
+    <input type="text" id="pokemonSearch" placeholder="Buscar Pokémon...">
+    <select id="pokemonSelect" aria-label="Selecciona un Pokémon"></select>
+    <button id="startGame">Comenzar</button>
+  </div>
+
+  <!-- Juego -->
+  <div class="game-container" id="gameContainer">
     <div class="quadrant eat">
-        EAT🍡
-        <div class="progress-container">
+      <span>EAT 🍡</span>
+      <div class="progress-container">
         <div id="eatBar" class="progress-bar"></div>
-        </div>
-        <div class="stats">24% Full</div>
+      </div>
+      <div class="stats">24% Full</div>
+      <button class="comidas">Comida</button>
+
+      <!-- Contenedor de Bayas -->
+      <div class="berry-container" id="berryContainer">
+        <div class="berry-grid" id="berryGrid"></div>
+      </div>
     </div>
 
     <div class="quadrant play">
-        PLAY✨
-        <div class="progress-container">
-        <div id="playBar" class="progress-bar" style="background-color: orange;"></div>
+      <span>PLAY ✨</span>
+      <div class="progress-container">
+        <div id="playBar" class="progress-bar"></div>
+      </div>
+      <div class="stats">48% Fun</div>
+      <button class="game" id="startMiniGame">Juego</button>
+
+      <!-- Mini Juego de Pelota Pokémon -->
+      <div class="mini-game" id="miniGame" style="display:none;">
+        <div class="pokemon" id="pokemonCatch">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu">
         </div>
-        <div class="stats">48% Fun</div>
+        <div class="ball" id="pokeBall"></div>
+        <div class="score" id="score">Puntaje: 0</div>
+      </div>
     </div>
 
     <div class="quadrant fight">
-        FIGHT💢
-        <div class="progress-container">
-        <div id="fightBar" class="progress-bar" style="background-color: red;"></div>
-        </div>
-        <div class="stats">20% Strength</div>
+      <span>FIGHT 💢</span>
+      <div class="progress-container">
+        <div id="fightBar" class="progress-bar"></div>
+      </div>
+      <div class="stats">20% Strength</div>
     </div>
 
     <div class="quadrant sleep">
-        SLEEP💤
-        <div class="progress-container">
-        <div id="sleepBar" class="progress-bar" style="background-color: blue;"></div>
-        </div>
-        <div class="stats">49% Energy</div>
+      <span>SLEEP 💤</span>
+      <div class="progress-container">
+        <div id="sleepBar" class="progress-bar"></div>
+      </div>
+      <div class="stats">49% Energy</div>
     </div>
 
-    <div class="pet-container">
-        <img src="victini.png" alt="Victini">
-        <div>Victini</div>
-        <div class="progress-container" style="width: 100px; height: 10px; margin-top:5px;">
-        <div id="happinessBar" class="progress-bar" style="width: 30%; background-color: pink;"></div>
-        </div>
-        <div class="stats">Happiness 30%</div>
+    <div class="pok-container">
+      <img id="pokemonImg" src="" alt="Imagen del Pokémon seleccionado">
+      <div id="pokemonName">Nombre</div>
+      <div class="progress-container life-container">
+        <div id="life" class="progress-bar"></div>
+      </div>
+      <div class="stats">🧬 Vida</div>
     </div>
-    </div>
-    <script src="tamagochi.js"></script>
+  </div>
 
+  <script src="tamagochi.js"></script>
 </body>
 </html>

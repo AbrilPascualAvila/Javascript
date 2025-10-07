@@ -1,80 +1,192 @@
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #d3f0c7;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
 
-    .game-container {
-        width: 800px;
-        height: 600px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        gap: 5px;
-    }
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-image: url(fondo.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-    .quadrant {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        position: relative;
-        border-radius: 10px;
-    }
+/* Selector */
+.selector-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background: #FFFFE3;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
 
-    .eat { background-color: #b6f1b1; }
-    .play { background-color: #fff9b1; }
-    .fight { background-color: #f1b1b1; }
-    .sleep { background-color: #b1d4f1; }
+.selector-container input,
+.selector-container select,
+.selector-container button {
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
 
-    .progress-container {
-        width: 80%;
-        height: 20px;
-        background-color: #ccc;
-        border-radius: 10px;
-        margin-top: 10px;
-    }
+.selector-container button {
+  background-color: #7c2c8f;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
 
-    .progress-bar {
-        height: 100%;
-        background-color: #4caf50;
-        border-radius: 10px;
-        width: 50%;
-    }
+/* Juego */
+#gameContainer {
+  display: grid;
+  max-width: 800px;
+  margin: 20px auto;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
 
-    .pet-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-    }
+#gameContainer.show {
+  opacity: 1;
+}
 
-    .pet-container img {
-        width: 100px;
-        height: 100px;
-    }
+.quadrant, .pok-container {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-    .stats {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 5px;
-        width: 90%;
-    }
+.progress-container {
+  background: #eee;
+  width: 100%;
+  height: 12px;
+  border-radius: 6px;
+  margin: 8px 0;
+  overflow: hidden;
+}
 
-    .stats div {
-        font-size: 12px;
-    }
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
 
-    button {
-        margin-top: 10px;
-        padding: 5px 10px;
-        font-weight: bold;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-    }
+#life { width: 30%; background-color: pink; }
+#sleepBar { background-color: blue; }
+#fightBar { background-color: red; }
+#playBar { background-color: orange; }
+#eatBar { background-color: green; }
+
+.pok-container img {
+  display: block;
+  margin: 0 auto 10px auto;
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+/* Ocultar todo lo que no sea selector al inicio */
+body > *:not(.selector-container) {
+  display: none;
+}
+
+/* Contenedor de bayas centrado verticalmente */
+.berry-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center; /* horizontal */
+  align-items: flex-start; /* empezamos desde arriba, pero con margen */
+  overflow-y: auto;
+  padding: 60px 20px; /* margen superior para separarlo de la parte superior */
+  z-index: 1000;
+}
+
+/* Grid centrado horizontalmente y con espacio desde arriba */
+.berry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  max-width: 900px;
+  width: 100%;
+  justify-items: center; /* centra tarjetas horizontalmente */
+  align-items: start;
+}
+
+/* Tarjetas de bayas estilo “tarjetitas” */
+.berry-card {
+  background: #ffffff; /* fondo blanco */
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 120px;  /* coincide con min-width de la grilla */
+  height: 140px; /* altura fija */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.berry-card:hover {
+  transform: translateY(-5px) scale(1.05); /* efecto flotante al pasar ratón */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.berry-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+.berry-card div {
+  font-size: 0.85rem;
+  text-align: center;
+  word-break: break-word;
+}
+
+.mini-game {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  background: #def;
+  border: 2px solid #333;
+  margin: 20px auto;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pokemon {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  top: 100px;
+  left: 170px;
+}
+
+.pokemon img {
+  width: 100%;
+  height: 100%;
+}
+

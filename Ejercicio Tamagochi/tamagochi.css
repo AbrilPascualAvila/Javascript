@@ -1,16 +1,10 @@
-/* Reset básico */
-* {
-  box-sizing: border-box;
-}
+/* Reset */
+* { box-sizing: border-box; }
 
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
-  background-image: url(fondo.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
+  background: url(fondo.jpg) center/cover no-repeat fixed;
 }
 
 /* Selector */
@@ -35,46 +29,60 @@ body {
 }
 
 .selector-container button {
-  background-color: #7c2c8f;
+  background: #7c2c8f;
   border: none;
   font-weight: bold;
-  cursor: pointer;
   color: white;
+  cursor: pointer;
+}
+
+/* Ocultar todo menos el selector al inicio */
+body > *:not(.selector-container) {
+  display: none;
 }
 
 /* Juego */
-#gameContainer {
-  display: grid;
-  max-width: 800px;
-  margin: 20px auto;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
+.game-container {
+  display: none;
+  max-width: 600px;
+  margin: 40px auto;
   opacity: 0;
   transition: opacity 0.5s ease;
 }
-
-#gameContainer.show {
+.game-container.show {
+  display: block;
   opacity: 1;
 }
 
-.quadrant, .pok-container {
+/* Contenedor principal */
+.pok-container {
   background: #fff;
-  padding: 15px;
-  border-radius: 12px;
+  padding: 20px;
+  border-radius: 16px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.pok-container img {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 10px;
+  object-fit: contain;
+}
+
+/* Fila barra + botón */
+.stat-row {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
 }
 
 .progress-container {
   background: #eee;
-  width: 100%;
-  height: 12px;
+  flex: 1;
+  height: 14px;
   border-radius: 6px;
-  margin: 8px 0;
   overflow: hidden;
 }
 
@@ -85,63 +93,60 @@ body {
   transition: width 0.3s ease;
 }
 
-#life { width: 30%; background-color: pink; }
-#sleepBar { background-color: blue; }
-#fightBar { background-color: red; }
-#playBar { background-color: orange; }
+/* Colores de barras */
+#life { background-color: pink; width: 30%; }
 #eatBar { background-color: green; }
+#playBar { background-color: orange; }
+#fightBar { background-color: red; }
 
-.pok-container img {
-  display: block;
-  margin: 0 auto 10px auto;
-  width: 150px;
-  height: 150px;
-  object-fit: contain;
+/* Botones */
+.comidas, .game, #startFightBtn, #closeBattle {
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
 }
 
-/* Ocultar todo lo que no sea selector al inicio */
-body > *:not(.selector-container) {
-  display: none;
-}
+.comidas { background: green; }
+.game { background: orange; }
+#startFightBtn { background: red; }
+#startFightBtn:hover { background: #f43f5e; }
+#closeBattle { background: red; }
 
-/* Contenedor de bayas centrado verticalmente */
+/* BAYAS */
 .berry-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.7);
   display: none;
-  justify-content: center; /* horizontal */
-  align-items: flex-start; /* empezamos desde arriba, pero con margen */
+  justify-content: center;
+  align-items: flex-start;
   overflow-y: auto;
-  padding: 60px 20px; /* margen superior para separarlo de la parte superior */
+  padding: 60px 20px;
   z-index: 1000;
 }
 
-/* Grid centrado horizontalmente y con espacio desde arriba */
 .berry-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 15px;
   max-width: 900px;
   width: 100%;
-  justify-items: center; /* centra tarjetas horizontalmente */
-  align-items: start;
+  justify-items: center;
 }
 
-/* Tarjetas de bayas estilo “tarjetitas” */
 .berry-card {
-  background: #ffffff; /* fondo blanco */
+  background: #fff;
   border-radius: 12px;
   padding: 10px;
   text-align: center;
-  cursor: pointer;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 120px;  /* coincide con min-width de la grilla */
-  height: 140px; /* altura fija */
+  width: 120px;
+  height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -149,7 +154,7 @@ body > *:not(.selector-container) {
 }
 
 .berry-card:hover {
-  transform: translateY(-5px) scale(1.05); /* efecto flotante al pasar ratón */
+  transform: translateY(-5px) scale(1.05);
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
@@ -166,27 +171,83 @@ body > *:not(.selector-container) {
   word-break: break-word;
 }
 
-.mini-game {
-  position: relative;
-  width: 400px;
-  height: 300px;
-  background: #def;
-  border: 2px solid #333;
-  margin: 20px auto;
-  border-radius: 12px;
-  overflow: hidden;
+/* BATALLA */
+.battle-container {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
-.pokemon {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  top: 100px;
-  left: 170px;
-}
-
-.pokemon img {
+.battle-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 600px;
   width: 100%;
-  height: 100%;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
+.battle-arena {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.pokemon-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pokemon-side img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.hp-bar {
+  background: #ccc;
+  width: 100px;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.hp {
+  background: #4CAF50;
+  height: 100%;
+  width: 100%;
+  transition: width 0.3s ease;
+}
+
+.moves {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.moves button {
+  background: #ffcc00;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.moves button:hover {
+  background: #ffd633;
+}
+
+#battleLog {
+  margin-top: 10px;
+  font-weight: bold;
+}

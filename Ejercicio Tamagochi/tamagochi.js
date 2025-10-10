@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     playBar.style.width = "48%";
     fightBar.style.width = "20%";
     sleepBar.style.width = "49%";
-    lifeBar.style.width = "30%";
+    lifeBar.style.width = "100%";
   });
 
   loadPokemonList();
@@ -83,7 +83,7 @@ comidasBtn.addEventListener("click", async () => {
   berryGrid.innerHTML = "Cargando bayas...";
 
   try {
-    const res = await fetch("https://pokeapi.co/api/v2/berry?limit=64");
+    const res = await fetch("https://pokeapi.co/api/v2/berry?limit=24");
     const data = await res.json();
     const berries = data.results;
 
@@ -140,4 +140,117 @@ berryContainer.addEventListener("click", (e) => {
 });
 
 
+const fightBtn = document.getElementById("startFightBtn");
+const battleContainer = document.getElementById("battleContainer");
+const playerPokemonImg = document.getElementById("playerPokemon");
+const enemyPokemonImg = document.getElementById("enemyPokemon");
+const playerHPBar = document.getElementById("playerHP");
+const enemyHPBar = document.getElementById("enemyHP");
+const movesContainer = document.getElementById("movesContainer");
+const battleLog = document.getElementById("battleLog");
+const lifeBar = document.getElementById("life");
 
+let playerPokemon = null;
+let enemyPokemon = null;
+let playerHP = 100;
+let enemyHP = 100;
+let battleEndTimeout = null;
+
+// Botón Fight
+fightBtn.addEventListener("click", async () => {
+  if (!pokemonName.textContent || !pokemonImg.src) {
+    alert("Primero elige un Pokémon.");
+    return;
+  }
+
+  battleContainer.style.display = "flex";
+  battleLog.textContent = "¡Un Pokémon salvaje apareció!";
+
+  // Pokémon del jugador
+  playerPokemonImg.src = pokemonImg.src;
+  playerPokemon = pokemonName.textContent;
+
+  // Pokémon enemigo aleatorio
+  const randomId = Math.floor(Math.random() * 151) + 1;
+  const resEnemy = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+  const enemyData = await resEnemy.json();
+  enemyPokemon = enemyData.name.toUpperCase();
+  enemyPokemonImg.src = enemyData.sprites.front_default;
+
+  // Movimientos del jugador
+  const resPlayer = await fetch(`https://pokeapi.co/api/v2/pokemon/${playerPokemon.toLowerCase()}`);
+  const playerData = await resPlayer.json();
+  const moves = playerData.moves.slice(0, 4);
+
+  movesContainer.innerHTML = "";
+  moves.forEach(m => {
+    const btn = document.createElement("button");
+    btn.textContent = m.move.name.replace("-", " ").toUpperCase();
+    btn.addEventListener("click", () => doAttack(btn.textContent));
+    movesContainer.appendChild(btn);
+  });
+
+  // Reset HP
+  playerHP = parseInt(lifeBar.style.width) || 100;
+  enemyHP = 100;
+  playerHPBar.style.width = playerHP + "%";
+  enemyHPBar.style.width = "100%";
+});
+
+// Función de ataque
+function doAttack(moveName) {
+  if (enemyHP <= 0 || playerHP <= 0) return;
+
+  // Ataque del jugador
+  const damage = Math.floor(Math.random() * 25) + 10;
+  enemyHP -= damage;
+  if (enemyHP < 0) enemyHP = 0;
+  enemyHPBar.style.width = enemyHP + "%";
+  battleLog.textContent = `${playerPokemon} usó ${moveName}! 💥`;
+
+  // Si el enemigo muere
+  if (enemyHP === 0) {
+    battleLog.textContent = `¡${enemyPokemon} fue derrotado! 🎉`;
+    endBattle();
+    return;
+  }
+
+  // Contraataque del enemigo
+  setTimeout(() => {
+    if (playerHP <= 0) return; // prevenir ataques extra
+    const enemyDamage = Math.floor(Math.random() * 20) + 5;
+    playerHP -= enemyDamage;
+    if (playerHP < 0) playerHP = 0;
+    playerHPBar.style.width = playerHP + "%";
+    battleLog.textContent += `  ${enemyPokemon} contraatacó! ⚡`;
+
+    // Si el jugador muere
+    if (playerHP === 0) {
+      battleLog.textContent = `¡${playerPokemon} fue derrotado! 😢`;
+      endBattle();
+    }
+  }, 1000);
+}
+
+// Función para cerrar batalla después de 5 segundos
+function endBattle() {
+  // Bloquear movimientos
+  movesContainer.querySelectorAll("button").forEach(btn => btn.disabled = true);
+
+  // Cerrar batalla después de 5 segundos
+  clearTimeout(battleEndTimeout);
+  battleEndTimeout = setTimeout(() => {
+    lifeBar.style.width = playerHP + "%"; // sincronizar vida
+    battleContainer.style.display = "none";
+    movesContainer.querySelectorAll("button").forEach(btn => btn.disabled = false); // reset botones
+  }, 5000);
+}
+
+// Botón cerrar manual
+const closeBattleBtn = document.getElementById("closeBattle");
+closeBattleBtn.addEventListener("click", () => {
+  clearTimeout(battleEndTimeout);
+  lifeBar.style.width = playerHP + "%";
+  battleContainer.style.display = "none";
+  movesContainer.querySelectorAll("button").forEach(btn => btn.disabled = false);
+});

@@ -18,63 +18,77 @@
 
   <!-- Juego -->
   <div class="game-container" id="gameContainer">
-    <div class="quadrant eat">
-      <span>EAT 🍡</span>
+
+    <!-- Contenedor principal del Pokémon -->
+    <div class="pok-container">
+      <img id="pokemonImg" src="" alt="Imagen del Pokémon seleccionado">
+      <div id="pokemonName">Nombre</div>
+
+      <!-- Barra de vida -->
+      <div class="progress-container life-container">
+        <div id="life" class="progress-bar"></div>
+      </div>
+      <div class="stats">🧬 Vida</div>
+
+      <!-- Cuadrante Comer -->
       <div class="progress-container">
         <div id="eatBar" class="progress-bar"></div>
       </div>
-      <div class="stats">24% Full</div>
-      <button class="comidas">Comida</button>
+      <button class="comidas">🍡Food</button>
 
       <!-- Contenedor de Bayas -->
       <div class="berry-container" id="berryContainer">
         <div class="berry-grid" id="berryGrid"></div>
       </div>
+    
+
+    <!-- Contenedor del Juego -->
+    <div class="progress-container">
+      <div id="playBar" class="progress-bar"></div>
     </div>
+    <button class="game" id="startMiniGame">✨Game</button>
 
-    <div class="quadrant play">
-      <span>PLAY ✨</span>
-      <div class="progress-container">
-        <div id="playBar" class="progress-bar"></div>
-      </div>
-      <div class="stats">48% Fun</div>
-      <button class="game" id="startMiniGame">Juego</button>
+    <!-- Contenedor de la batalla -->
+    
+    <div class="progress-container">
+      <div id="fightBar" class="progress-bar"></div>
+    </div>
+    <button id="startFightBtn">💢Fight</button>
 
-      <!-- Mini Juego de Pelota Pokémon -->
-      <div class="mini-game" id="miniGame" style="display:none;">
-        <div class="pokemon" id="pokemonCatch">
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu">
+    <div class="battle-container" id="battleContainer">
+      <div class="battle-box">
+        <div class="battle-arena">
+
+          <!-- Pokémon del jugador -->
+          <div class="pokemon-side player">
+            <img id="playerPokemon" src="" alt="Tu Pokémon">
+            <div class="hp-bar">
+              <div id="playerHP" class="hp"></div>
+            </div>
+          </div>
+
+          <!-- Pokémon enemigo -->
+          <div class="pokemon-side enemy">
+            <img id="enemyPokemon" src="" alt="Enemigo Pokémon">
+            <div class="hp-bar">
+              <div id="enemyHP" class="hp"></div>
+            </div>
+          </div>
+
         </div>
-        <div class="ball" id="pokeBall"></div>
-        <div class="score" id="score">Puntaje: 0</div>
+
+        <!-- Información de la batalla -->
+        <div class="battle-info">
+          <div id="battleLog">¡Comienza la batalla!</div>
+          <div class="moves" id="movesContainer"></div>
+          <br>
+          <button id="closeBattle">Cerrar</button>
+        </div>
       </div>
     </div>
 
-    <div class="quadrant fight">
-      <span>FIGHT 💢</span>
-      <div class="progress-container">
-        <div id="fightBar" class="progress-bar"></div>
-      </div>
-      <div class="stats">20% Strength</div>
-    </div>
-
-    <div class="quadrant sleep">
-      <span>SLEEP 💤</span>
-      <div class="progress-container">
-        <div id="sleepBar" class="progress-bar"></div>
-      </div>
-      <div class="stats">49% Energy</div>
-    </div>
-
-    <div class="pok-container">
-      <img id="pokemonImg" src="" alt="Imagen del Pokémon seleccionado">
-      <div id="pokemonName">Nombre</div>
-      <div class="progress-container life-container">
-        <div id="life" class="progress-bar"></div>
-      </div>
-      <div class="stats">🧬 Vida</div>
-    </div>
   </div>
+
 
   <script src="tamagochi.js"></script>
 </body>

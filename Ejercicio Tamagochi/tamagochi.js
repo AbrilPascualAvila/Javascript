@@ -254,3 +254,122 @@ closeBattleBtn.addEventListener("click", () => {
   battleContainer.style.display = "none";
   movesContainer.querySelectorAll("button").forEach(btn => btn.disabled = false);
 });
+
+
+const closeFoodBtn = document.getElementById("closeFood");
+
+closeFoodBtn.addEventListener("click", () => {
+  berryContainer.style.display = "none";
+});
+
+// ------------------ Mini Juego Serpiente (Dragonair) ------------------
+const startMiniGameBtn = document.getElementById("startMiniGame");
+let snakeGameContainer;
+
+startMiniGameBtn.addEventListener("click", () => {
+  // Crear contenedor del juego si no existe
+  if (!snakeGameContainer) {
+    snakeGameContainer = document.createElement("div");
+    snakeGameContainer.id = "snakeGame";
+    snakeGameContainer.style.position = "absolute";
+    snakeGameContainer.style.top = "50%";
+    snakeGameContainer.style.left = "50%";
+    snakeGameContainer.style.transform = "translate(-50%, -50%)";
+    snakeGameContainer.style.background = "#fff";
+    snakeGameContainer.style.border = "2px solid #7c2c8f";
+    snakeGameContainer.style.borderRadius = "12px";
+    snakeGameContainer.style.padding = "20px";
+    snakeGameContainer.style.zIndex = "3000";
+    snakeGameContainer.style.textAlign = "center";
+    snakeGameContainer.style.display = "grid";
+    snakeGameContainer.innerHTML = `
+      <h3>Mini Juego: Dragonair 🐉</h3>
+      <canvas id="snakeCanvas" width="400" height="400" style="background:#e0f7fa; border:1px solid #000;"></canvas>
+      <br>
+      <button id="closeSnakeGame">Cerrar</button>
+      <div id="snakeScore">Puntos: 0</div>
+    `;
+    document.body.appendChild(snakeGameContainer);
+
+    // Botón cerrar
+    document.getElementById("closeSnakeGame").addEventListener("click", () => {
+      snakeGameContainer.style.display = "none";
+      clearInterval(gameInterval);
+    });
+  }
+
+  snakeGameContainer.style.display = "block";
+
+  const canvas = document.getElementById("snakeCanvas");
+  const ctx = canvas.getContext("2d");
+  const box = 20;
+  let snake = [{x: 10 * box, y: 10 * box}];
+  let food = {x: Math.floor(Math.random()*20)*box, y: Math.floor(Math.random()*20)*box};
+  let d;
+  let score = 0;
+
+  document.addEventListener("keydown", direction);
+  function direction(event){
+    if(event.keyCode === 37 && d !== "RIGHT") d = "LEFT";
+    else if(event.keyCode === 38 && d !== "DOWN") d = "UP";
+    else if(event.keyCode === 39 && d !== "LEFT") d = "RIGHT";
+    else if(event.keyCode === 40 && d !== "UP") d = "DOWN";
+  }
+
+  function collision(head, array){
+    for(let i=0; i<array.length; i++){
+      if(head.x === array[i].x && head.y === array[i].y){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function draw(){
+    ctx.fillStyle = "#e0f7fa";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for(let i=0; i<snake.length; i++){
+      // Dragonair head/tail color
+      ctx.fillStyle = i===0 ? "#7b2cbf" : "#b592f2";
+      ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      ctx.strokeStyle = "#fff";
+      ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+    }
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, box, box);
+
+    let snakeX = snake[0].x;
+    let snakeY = snake[0].y;
+
+    if(d === "LEFT") snakeX -= box;
+    if(d === "UP") snakeY -= box;
+    if(d === "RIGHT") snakeX += box;
+    if(d === "DOWN") snakeY += box;
+
+    // Comer
+    if(snakeX === food.x && snakeY === food.y){
+      score++;
+      document.getElementById("snakeScore").innerText = "Puntos: " + score;
+      food = {x: Math.floor(Math.random()*20)*box, y: Math.floor(Math.random()*20)*box};
+    } else {
+      snake.pop();
+    }
+
+    let newHead = {x: snakeX, y: snakeY};
+
+    // Colisiones
+    if(snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height || collision(newHead, snake)){
+      clearInterval(gameInterval);
+      alert("¡Juego terminado! Puntos: " + score);
+      snakeGameContainer.style.display = "none";
+      return;
+    }
+
+    snake.unshift(newHead);
+  }
+
+  clearInterval(window.gameInterval);
+  window.gameInterval = setInterval(draw, 100);
+});

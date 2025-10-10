@@ -43,24 +43,27 @@ body > *:not(.selector-container) {
 
 /* Juego */
 .game-container {
-  display: none;
-  max-width: 600px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
   margin: 40px auto;
   opacity: 0;
   transition: opacity 0.5s ease;
 }
 .game-container.show {
-  display: block;
   opacity: 1;
 }
 
-/* Contenedor principal */
+/* Columna izquierda */
 .pok-container {
+  position: relative; /* Importante para la berry-container */
   background: #fff;
   padding: 20px;
   border-radius: 16px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: auto; /* Ajusta al contenido, evita 150% */
+  display: inline-block; /* Para que el contenedor se ajuste al Pokémon */
 }
 
 .pok-container img {
@@ -70,20 +73,24 @@ body > *:not(.selector-container) {
   object-fit: contain;
 }
 
-/* Fila barra + botón */
-.stat-row {
+/* Columna derecha */
+.right-panel {
+  width: 45%;
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   align-items: center;
-  gap: 10px;
-  margin: 10px 0;
+  position: relative;
 }
 
+/* Barra de vida y stats */
 .progress-container {
   background: #eee;
-  flex: 1;
+  width: 100%;
   height: 14px;
   border-radius: 6px;
   overflow: hidden;
+  margin: 10px 0;
 }
 
 .progress-bar {
@@ -94,14 +101,14 @@ body > *:not(.selector-container) {
 }
 
 /* Colores de barras */
-#life { background-color: pink; width: 30%; }
-#eatBar { background-color: green; }
-#playBar { background-color: orange; }
+#life { background-color: green; width: 30%; }
+#eatBar { background-color: blue; }
+#playBar { background-color: orangered; }
 #fightBar { background-color: red; }
 
 /* Botones */
-.comidas, .game, #startFightBtn, #closeBattle {
-  color: white;
+.comidas,.vida, .game, #startFightBtn, #closeBattle, #closeFood{
+  color: black;
   border: none;
   padding: 6px 10px;
   border-radius: 8px;
@@ -110,76 +117,139 @@ body > *:not(.selector-container) {
   white-space: nowrap;
 }
 
-.comidas { background: green; }
-.game { background: orange; }
-#startFightBtn { background: red; }
-#startFightBtn:hover { background: #f43f5e; }
-#closeBattle { background: red; }
+.vida { background: lightgreen; }
+.vida:hover { background: green; }
 
-/* BAYAS */
+.comidas { background: lightskyblue; }
+.comidas:hover { background: blue; }
+
+.game { background: lightsalmon; }
+.game:hover { background: orangered; }
+
+#startFightBtn { background: lightcoral; }
+#startFightBtn:hover { background: red; }
+
+#closeBattle, #closeFood { background: red; }
+
+
 .berry-container {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: flex-start;
-  overflow-y: auto;
-  padding: 60px 20px;
-  z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 10px;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background: transparent;
+    padding: 10px;
+    border-radius: 12px;
+    max-width: 100vw; /* Limita ancho del contenedor */
+    box-sizing: border-box;
 }
 
 .berry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-  max-width: 900px;
-  width: 100%;
-  justify-items: center;
+    display: grid;
+    gap: 15px;
+    /* Grid responsivo: tantas columnas como quepan, mínimo 100px */
+    grid-template-columns: repeat(8, 1fr);
+    width: 100%;
 }
 
 .berry-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 120px;
-  height: 140px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 110px;   /* Ocupa toda la columna */
+    height: 140px; /* Alto fijo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 .berry-card:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
 .berry-card img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  margin-bottom: 5px;
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 5px;
 }
 
 .berry-card div {
-  font-size: 0.85rem;
-  text-align: center;
-  word-break: break-word;
+    font-size: 0.85rem;
+    text-align: center;
+    word-break: break-word;
 }
+
+/* Media Queries opcionales para mejorar el diseño en pantallas muy pequeñas */
+
+@media (max-width: 1500px) {
+    .berry-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+}
+
+@media (max-width: 1120px) {
+    .berry-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+@media (max-width: 1020px) {
+    .berry-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 850px) {
+    .berry-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 740px) {
+    .berry-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 620px) {
+    .berry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .berry-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
 
 /* BATALLA */
 .battle-container {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
+  position: absolute;
+  top: 0;
+  left: 100%;       /* Igual que .berry-container */
+  margin-left: 10px; /* Igual que .berry-container */
   display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
+  flex-direction: column; /* Si quieres organizar elementos verticalmente */
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px;
+  border-radius: 12px;
+  max-width: 75vw;  /* Igual que .berry-container, opcional */
+  box-sizing: border-box;
+  z-index: 2000;    /* Mantenerlo por encima */
 }
 
 .battle-box {
